@@ -1,0 +1,51 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+*{
+  font-family: 'Montserrat', sans-serif;
+}
+
+input::placeholder {
+    color: #797979; 
+  }
+
+input{
+color: #525252;
+}
+
+
+.color-sushe-dg{
+color: #213E23;
+}
+
+.color-sushe-lg{
+    color:#AAD688
+}
+
+.bg-sushe-dg{
+    background-color: #213E23;
+}
+
+.bg-sushe-lg{
+    background-color: #AAD688;
+}
+
+@keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  .spin-image {
+    animation: spin 40s linear infinite;
+    z-index: -1; 
+   
+  }
+
+  body{
+    overflow: hidden;
+  }
