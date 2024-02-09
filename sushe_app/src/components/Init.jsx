@@ -20,7 +20,7 @@ const Init = ({ userName, setUserName, password, setPassword }) => {
   function fetchData(e) {
     e.preventDefault();
   
-    axios.get('https://sushe-backend-ubij.vercel.app/api/hello', {
+    axios.get('sushe-backend-p9to.vercel.app/api/ciola', {
       headers: {
         'Content-Type': 'application/json',
       },
