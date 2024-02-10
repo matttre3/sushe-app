@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Init from './components/Init'
 import Register from './components/Register';
-import Joincreate from './components/Joincreate';
+import Joincreate from './components/joincreate';
 import Joinpin from './components/Joinpin';
 import MyOrder from './components/MyOrder';
 import AllOrder from './components/AllOrder';
