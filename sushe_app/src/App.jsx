@@ -1,7 +1,10 @@
 import { useState } from 'react'
-import {BrowserRouter, Routes, Route} from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Init from './components/Init'
 import Register from './components/Register';
+import Joincreate from './components/Joincreate';
+import Joinpin from './components/Joinpin';
+import MyOrder from './components/MyOrder';
 import './App.css'
 
 
@@ -28,6 +31,25 @@ function App() {
             setUserName={setUserName}
             password={password}
             setPassword={setPassword}
+          />
+        }
+        />
+
+        <Route path="/joincreate" element={
+          <Joincreate
+          />
+        }
+        />
+
+        <Route path="/joinpin" element={
+          <Joinpin
+          />
+        }
+        />
+
+
+        <Route path="/myorder" element={
+          <MyOrder
           />
         }
         />

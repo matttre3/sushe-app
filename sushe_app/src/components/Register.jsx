@@ -30,7 +30,8 @@ const Register = () => {
           <form className='flex-col flex-wrap items-center justify-center flex mb-6' action="">
             <input className="bg-zinc-200 m-1 rounded-xl  p-3 w-[250px] mb-5 input" onChange={setName} type="text" name='userName' id='userName' placeholder='Username' />
             <input className="bg-zinc-200 rounded-xl p-3 w-[250px] mb-5 input" onChange={setPsw} type="password" name='password' id='password' placeholder='Password' />
-            <button onClick={submitForm} className='font-bold text-md color-sushe-dg bg-sushe-lg rounded-2xl p-2 w-[90px]'>Accedi</button>
+            <input className="bg-zinc-200 rounded-xl p-3 w-[250px] mb-5 input" onChange={setPsw} type="password" name='passwordConfirm' id='passwordConfirm' placeholder='Conferma Password' />
+            <button onClick={submitForm} className='font-bold text-md color-sushe-dg bg-sushe-lg rounded-2xl p-2 w-[100px]'>Registrati</button>
           </form>
           <Link to="/"> <p className='underline font-medium text-md color-sushe-dg'>Hai già un account? Accedi qui!</p></Link>
           </div>
