@@ -23,12 +23,20 @@ color: #213E23;
     color:#AAD688
 }
 
+.color-sushe-mg{
+  color: #5EA758
+}
+
 .bg-sushe-dg{
     background-color: #213E23;
 }
 
 .bg-sushe-lg{
     background-color: #AAD688;
+}
+
+.bg-sushe-mg{
+  background-color: #5EA758;
 }
 
 @keyframes spin {
@@ -46,6 +54,4 @@ color: #213E23;
    
   }
 
-  body{
-    overflow: hidden;
-  }
+  

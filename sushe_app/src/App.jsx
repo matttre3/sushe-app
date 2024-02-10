@@ -5,6 +5,7 @@ import Register from './components/Register';
 import Joincreate from './components/Joincreate';
 import Joinpin from './components/Joinpin';
 import MyOrder from './components/MyOrder';
+import AllOrder from './components/AllOrder';
 import './App.css'
 
 
@@ -53,6 +54,13 @@ function App() {
           />
         }
         />
+
+        <Route path="/allorder" element={
+          <AllOrder
+          />
+        }
+        />
+
       </Routes>
     </>
   )
