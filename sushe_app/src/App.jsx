@@ -11,6 +11,7 @@ import "./App.css";
 function App() {
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoggedIn, setIsLoggedIn] = useState("false");
 
   return (
     <>
@@ -23,6 +24,8 @@ function App() {
               setUserName={setUserName}
               password={password}
               setPassword={setPassword}
+              isLoggedIn={isLoggedIn}
+              setIsLoggedIn={setIsLoggedIn}
             />
           }
         />
@@ -43,6 +46,7 @@ function App() {
         <Route path="/joinpin" element={<Joinpin />} />
 
         <Route path="/myorder" element={<MyOrder />} />
+        {/* ^^^^^^^  /:id/myorder qua si può fare routing dinamico */}
 
         <Route path="/allorder" element={<AllOrder />} />
       </Routes>

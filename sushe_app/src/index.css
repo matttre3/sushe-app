@@ -2,56 +2,52 @@
 @tailwind components;
 @tailwind utilities;
 
-*{
-  font-family: 'Montserrat', sans-serif;
+* {
+  font-family: "Montserrat", sans-serif;
 }
 
 input::placeholder {
-    color: #797979; 
-  }
-
-input{
-color: #525252;
+  color: #797979;
 }
 
-
-.color-sushe-dg{
-color: #213E23;
+input {
+  color: #525252;
 }
 
-.color-sushe-lg{
-    color:#AAD688
+.color-sushe-dg {
+  color: #213e23;
 }
 
-.color-sushe-mg{
-  color: #5EA758
+.color-sushe-lg {
+  color: #aad688;
 }
 
-.bg-sushe-dg{
-    background-color: #213E23;
+.color-sushe-mg {
+  color: #5ea758;
 }
 
-.bg-sushe-lg{
-    background-color: #AAD688;
+.bg-sushe-dg {
+  background-color: #213e23;
 }
 
-.bg-sushe-mg{
-  background-color: #5EA758;
+.bg-sushe-lg {
+  background-color: #aad688;
+}
+
+.bg-sushe-mg {
+  background-color: #5ea758;
 }
 
 @keyframes spin {
-    0% {
-      transform: rotate(0deg);
-    }
-    100% {
-      transform: rotate(360deg);
-    }
+  0% {
+    transform: rotate(0deg);
   }
-
-  .spin-image {
-    animation: spin 40s linear infinite;
-    z-index: -1; 
-   
+  100% {
+    transform: rotate(360deg);
   }
+}
 
-  
+.spin-image {
+  animation: spin 40s linear infinite;
+  z-index: -1;
+}
