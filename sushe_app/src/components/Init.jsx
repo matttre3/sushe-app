@@ -4,6 +4,7 @@ import sushelogo from "../assets/sushe-logo.png";
 import blob from "../assets/blob.svg";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { redirect } from "react-router-dom";
 
 const Init = ({
   userName,
@@ -35,11 +36,11 @@ const Init = ({
         password: password,
       }),
     })
-      .then(async (response) => await response.json()) // Utilizza async/await correttamente
+      .then(async (response) => await response.json())
       .then(async (data) => {
         console.log(data);
+        //qua dai dati deve controllare se l'accesso è corretto, e settare setIsLoggedIn a true in caso
         await setIsLoggedIn(true);
-        console.log(isLoggedIn);
       })
       .catch((error) => console.error("Errore:", error));
   }
@@ -82,13 +83,14 @@ const Init = ({
               id="password"
               placeholder="Password"
             />
-
-            <button
-              onClick={fetchData}
-              className="font-bold text-md color-sushe-dg bg-sushe-lg rounded-2xl p-2 w-[90px]"
-            >
-              Accedi
-            </button>
+            <Link to="/joincreate">
+              <button
+                onClick={fetchData}
+                className="font-bold text-md color-sushe-dg bg-sushe-lg rounded-2xl p-2 w-[90px]"
+              >
+                Accedi
+              </button>
+            </Link>
           </form>
           <Link to="/register">
             <p className="font-medium text-md color-sushe-dg underline">
