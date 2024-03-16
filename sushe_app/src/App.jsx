@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useLocalStorage } from "./hooks/useLocalStorage";
 import Init from "./components/Init";
 import Register from "./components/Register";
 import Joincreate from "./components/Joincreate";
@@ -7,16 +8,6 @@ import Joinpin from "./components/Joinpin";
 import MyOrder from "./components/MyOrder";
 import AllOrder from "./components/AllOrder";
 import "./App.css";
-
-function useLocalStorage(key, defaultValue) {
-  const [value, setValue] = useState(localStorage.getItem(key) ?? defaultValue);
-
-  useEffect(() => {
-    localStorage.setItem(key, value);
-  }, [value]);
-
-  return [value, setValue];
-}
 
 function App() {
   const [userName, setUserName] = useState("");
@@ -53,7 +44,12 @@ function App() {
 
         <Route
           path="/joincreate"
-          element={<Joincreate isLoggedIn={isLoggedIn} />}
+          element={
+            <Joincreate
+              logout={() => setIsLoggedIn(false)}
+              isLoggedIn={isLoggedIn}
+            />
+          }
         />
 
         <Route path="/joinpin" element={<Joinpin />} />

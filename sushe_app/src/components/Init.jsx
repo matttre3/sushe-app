@@ -6,6 +6,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { useRedirect } from "../hooks/useRedirect";
 
 const Init = ({
   userName,
@@ -15,6 +16,8 @@ const Init = ({
   isLoggedIn,
   setIsLoggedIn,
 }) => {
+  useRedirect("/joincreate", isLoggedIn);
+
   const [loginError, setLoginError] = useState();
   function setName(e) {
     setUserName(e.target.value);
