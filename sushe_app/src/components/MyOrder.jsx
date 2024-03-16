@@ -90,7 +90,7 @@ const MyOrder = () => {
       {isOpen && (
         <div
           onClick={closeModal}
-          className="fixed inset-0 z-1 bg-slate-100 backdrop-blur-[2px] bg-opacity-50 "
+          className="fixed inset-0 z-1 bg-slate-100 backdrop-blur-sm bg-opacity-50 "
         >
           <div className="fixed inset-0 z-50 flex items-center justify-center">
             <div

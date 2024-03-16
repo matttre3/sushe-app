@@ -1,9 +1,19 @@
 import React from "react";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import sushetext from "../assets/sushe-text.png";
 import sushelogo from "../assets/sushe-logo.png";
 import blob from "../assets/blob.svg";
 
-const Joincreate = () => {
+const Joincreate = ({ isLoggedIn }) => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isLoggedIn == false) {
+      navigate("/");
+    }
+  }, [navigate]);
+
   return (
     <>
       <div className="relative flex flex-col items-center overflow-hidden">

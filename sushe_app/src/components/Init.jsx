@@ -4,8 +4,8 @@ import sushelogo from "../assets/sushe-logo.png";
 import blob from "../assets/blob.svg";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import { redirect } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 const Init = ({
   userName,
@@ -15,6 +15,7 @@ const Init = ({
   isLoggedIn,
   setIsLoggedIn,
 }) => {
+  const [loginError, setLoginError] = useState();
   function setName(e) {
     setUserName(e.target.value);
   }
@@ -36,8 +37,10 @@ const Init = ({
         if (response.data.check == true) {
           navigate("/joincreate");
           setIsLoggedIn(true);
-        } else {
-          console.log("wrong data");
+        } else if (response.data.check == false) {
+          setLoginError(false);
+        } else if (response.data.check == false) {
+          setLoginError(false);
         }
       })
       .catch((error) => {
@@ -90,11 +93,13 @@ const Init = ({
             >
               Accedi
             </button>
+
+            {loginError == false && <p>Wrong Credentials</p>}
           </form>
           <Link to="/register">
             <p className="font-medium text-md color-sushe-dg underline">
               Non hai un account? Registrati ora!
-            </p>{" "}
+            </p>
           </Link>
         </div>
       </div>
