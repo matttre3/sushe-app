@@ -8,48 +8,10 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useRedirect } from "../hooks/useRedirect";
 
-const Init = ({
-  userName,
-  setUserName,
-  password,
-  setPassword,
-  isLoggedIn,
-  setIsLoggedIn,
-}) => {
-  useRedirect("/joincreate", isLoggedIn);
-
-  const [loginError, setLoginError] = useState();
-  function setName(e) {
-    setUserName(e.target.value);
-  }
-
-  function setPsw(e) {
-    setPassword(e.target.value);
-  }
+const Init = ({ userName, setUserName }) => {
+  useRedirect("/joincreate", userName);
+  const [userNameInput, setUserNameInput] = useState("");
   const navigate = useNavigate();
-
-  function fetchData(e) {
-    e.preventDefault();
-
-    axios
-      .post("http://localhost:3000/logincheck", {
-        userName: userName,
-        password: password,
-      })
-      .then((response) => {
-        if (response.data.check == true) {
-          navigate("/joincreate");
-          setIsLoggedIn(true);
-        } else if (response.data.check == false) {
-          setLoginError(false);
-        } else if (response.data.check == false) {
-          setLoginError(false);
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }
 
   return (
     <>
@@ -67,7 +29,7 @@ const Init = ({
             alt="text-logo"
           />
           <h2 className="mt-[60px] font-medium text-xl color-sushe-dg mb-4">
-            Accedi ora!
+            Inserisci il tuo username!
           </h2>
           <form
             className="flex-col flex-wrap items-center justify-center flex mb-6"
@@ -75,35 +37,24 @@ const Init = ({
           >
             <input
               className="bg-zinc-200 m-1 rounded-xl  p-3 w-[250px] mb-5 input"
-              onChange={setName}
+              onChange={(e) => setUserNameInput(e.target.value)}
               type="text"
               name="userName"
+              value={userNameInput}
               id="userName"
               placeholder="Username"
             />
-            <input
-              className="bg-zinc-200 rounded-xl p-3 w-[250px] mb-5 input"
-              onChange={setPsw}
-              type="password"
-              name="password"
-              id="password"
-              placeholder="Password"
-            />
 
             <button
-              onClick={fetchData}
+              onClick={(e) => {
+                e.preventDefault();
+                setUserName(userNameInput);
+              }}
               className="font-bold text-md color-sushe-dg bg-sushe-lg rounded-2xl p-2 w-[90px]"
             >
               Accedi
             </button>
-
-            {loginError == false && <p>Wrong Credentials</p>}
           </form>
-          <Link to="/register">
-            <p className="font-medium text-md color-sushe-dg underline">
-              Non hai un account? Registrati ora!
-            </p>
-          </Link>
         </div>
       </div>
     </>

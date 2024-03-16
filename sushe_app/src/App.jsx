@@ -10,45 +10,24 @@ import AllOrder from "./components/AllOrder";
 import "./App.css";
 
 function App() {
-  const [userName, setUserName] = useState("");
-  const [password, setPassword] = useState("");
-  const [isLoggedIn, setIsLoggedIn] = useLocalStorage("isLoggedIn", false);
+  const [userName, setUserName] = useLocalStorage("userName", "");
 
   return (
     <>
       <Routes>
         <Route
           path="/"
-          element={
-            <Init
-              userName={userName}
-              setUserName={setUserName}
-              password={password}
-              setPassword={setPassword}
-              isLoggedIn={isLoggedIn}
-              setIsLoggedIn={setIsLoggedIn}
-            />
-          }
+          element={<Init userName={userName} setUserName={setUserName} />}
         />
         <Route
           path="/register"
-          element={
-            <Register
-              userName={userName}
-              setUserName={setUserName}
-              password={password}
-              setPassword={setPassword}
-            />
-          }
+          element={<Register userName={userName} setUserName={setUserName} />}
         />
 
         <Route
           path="/joincreate"
           element={
-            <Joincreate
-              logout={() => setIsLoggedIn(false)}
-              isLoggedIn={isLoggedIn}
-            />
+            <Joincreate userName={userName} logout={() => setUserName("")} />
           }
         />
 

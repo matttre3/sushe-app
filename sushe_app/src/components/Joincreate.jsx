@@ -6,8 +6,8 @@ import sushetext from "../assets/sushe-text.png";
 import sushelogo from "../assets/sushe-logo.png";
 import blob from "../assets/blob.svg";
 
-const Joincreate = ({ isLoggedIn, logout }) => {
-  useRedirect("/", !isLoggedIn);
+const Joincreate = ({ userName, logout }) => {
+  useRedirect("/", !userName);
   return (
     <>
       <div className="relative flex flex-col items-center overflow-hidden">
