@@ -14,7 +14,7 @@ const MyOrder = () => {
 
   function closeModal() {
     console.log(dishNumber);
-    console.log(dishQuantity); //LI POSSIEDO ENTRAMBI. FUNZIONA <3
+    console.log(dishQuantity); //LI POSSIEDO ENTRAMBI. FUNZIONA
     setIsOpen(false);
     //QUA VA LA RICHIESTA POST CHE MANDA NUMERO E QUANTITA
     setDishQuantity(1);

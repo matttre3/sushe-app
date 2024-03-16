@@ -5,6 +5,7 @@ import blob from "../assets/blob.svg";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { redirect } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Init = ({
   userName,
@@ -21,28 +22,27 @@ const Init = ({
   function setPsw(e) {
     setPassword(e.target.value);
   }
+  const navigate = useNavigate();
 
   function fetchData(e) {
     e.preventDefault();
 
-    fetch("http://localhost:3000/api/logincheck", {
-      //https://sushe-backend-p9to.vercel.app/
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
+    axios
+      .post("http://localhost:3000/logincheck", {
         userName: userName,
         password: password,
-      }),
-    })
-      .then(async (response) => await response.json())
-      .then(async (data) => {
-        console.log(data);
-        //qua dai dati deve controllare se l'accesso è corretto, e settare setIsLoggedIn a true in caso
-        await setIsLoggedIn(true);
       })
-      .catch((error) => console.error("Errore:", error));
+      .then((response) => {
+        if (response.data.check == true) {
+          navigate("/joincreate");
+          setIsLoggedIn(true);
+        } else {
+          console.log("wrong data");
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }
 
   return (
@@ -83,14 +83,13 @@ const Init = ({
               id="password"
               placeholder="Password"
             />
-            <Link to="/joincreate">
-              <button
-                onClick={fetchData}
-                className="font-bold text-md color-sushe-dg bg-sushe-lg rounded-2xl p-2 w-[90px]"
-              >
-                Accedi
-              </button>
-            </Link>
+
+            <button
+              onClick={fetchData}
+              className="font-bold text-md color-sushe-dg bg-sushe-lg rounded-2xl p-2 w-[90px]"
+            >
+              Accedi
+            </button>
           </form>
           <Link to="/register">
             <p className="font-medium text-md color-sushe-dg underline">
