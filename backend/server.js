@@ -16,6 +16,7 @@ const port = 3000;
 
 db.connect();
 
+app.use(bodyParser.json({ extended: false }));
 app.use(
   cors({
     origin: "*",
@@ -47,7 +48,30 @@ app.get("/create-table", (req, res) => {
   );
 });
 
-app.use(bodyParser.json({ extended: false }));
+app.post("/checklogintable", (req, res) => {
+  const loginTableNumber = req.body.loginTableNumber;
+  const loginTablePin = req.body.loginTablePin;
+
+  db.query(
+    "SELECT * FROM tables WHERE id = $1",
+    [loginTableNumber],
+    (err, result) => {
+      if (err) {
+        console.error("errore durante la query");
+      } else {
+        if (result.rows.length > 0) {
+          const table = result.rows[0];
+          if (loginTablePin == table.pin) {
+            res.json({ check: true });
+            console.log("e giusto fra");
+          } else {
+            res.json({ check: false });
+          }
+        }
+      }
+    }
+  );
+});
 
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);

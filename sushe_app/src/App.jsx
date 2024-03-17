@@ -40,7 +40,10 @@ function App() {
           }
         />
 
-        <Route path="/joinpin" element={<JoinPin />} />
+        <Route
+          path="/joinpin"
+          element={<JoinPin setTableNumber={setTableNumber} />}
+        />
 
         <Route
           path={`/:tableNumber/myorder`}

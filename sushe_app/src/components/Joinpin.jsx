@@ -1,15 +1,33 @@
 import React, { useState } from "react";
 import sushetext from "../assets/sushe-text.png";
 import sushelogo from "../assets/sushe-logo.png";
+import { useNavigate } from "react-router-dom";
 import blob from "../assets/blob.svg";
+import axios from "axios";
 
-const JoinPin = () => {
+const JoinPin = ({ tableNumber, setTableNumber }) => {
+  const navigate = useNavigate();
+
   function checkLoginTable() {
-    axios.post();
+    axios
+      .post("http://localhost:3000/checklogintable", {
+        loginTableNumber: loginTableNumber,
+        loginTablePin: loginTablePin,
+      })
+      .then((response) => {
+        if (response.data.check == true) {
+          setTableNumber(loginTableNumber);
+          navigate(`/${loginTableNumber}/myorder`);
+        } else {
+          console.log("hai sbagliato qualcosa fratmo");
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }
 
-  const [loginTableNumber, setLoginTableNumber] = us;
-  eState();
+  const [loginTableNumber, setLoginTableNumber] = useState();
   const [loginTablePin, setLoginTablePin] = useState();
 
   return (
