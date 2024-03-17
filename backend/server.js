@@ -73,6 +73,35 @@ app.post("/checklogintable", (req, res) => {
   );
 });
 
+app.get("/get-orders", (req, res) => {
+  const tableNumber = req.query.tableNumber;
+  const userName = req.query.userName;
+  console.log(req.query);
+  db.query(
+    "SELECT * FROM orders WHERE table_id = $1 AND username = $2",
+    [tableNumber, userName],
+    (err, result) => {
+      if (err) {
+        console.error("errore durante la query");
+      } else {
+        res.json(result.rows);
+      }
+    }
+  );
+});
+
+app.post("/deleteorder", (req, res) => {
+  const orderId = req.body.orderId;
+
+  db.query("DELETE FROM orders WHERE id = $1", [orderId], (err, result) => {
+    if (err) {
+      console.error("errore durante la query");
+    } else {
+      res.status(200).send();
+    }
+  });
+});
+
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);
 });

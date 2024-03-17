@@ -11,7 +11,6 @@ import "./App.css";
 
 function App() {
   const [userName, setUserName] = useLocalStorage("userName", "");
-  const [tableNumber, setTableNumber] = useLocalStorage("tableNumber", "");
   const [tablePin, setTablePin] = useLocalStorage("tablePin", "");
 
   return (
@@ -32,25 +31,19 @@ function App() {
             <Joincreate
               userName={userName}
               logout={() => setUserName("")}
-              tableNumber={tableNumber}
-              setTableNumber={setTableNumber}
               tablePin={tablePin}
               setTablePin={setTablePin}
             />
           }
         />
 
-        <Route
-          path="/joinpin"
-          element={<JoinPin setTableNumber={setTableNumber} />}
-        />
+        <Route path="/joinpin" element={<JoinPin />} />
 
         <Route
           path={`/:tableNumber/myorder`}
           element={
             <MyOrder
-              tableNumber={tableNumber}
-              setTableNumber={setTableNumber}
+              userName={userName}
               tablePin={tablePin}
               setTablePin={setTablePin}
             />
@@ -58,7 +51,7 @@ function App() {
         />
         {/* ^^^^^^^  /:id/myorder qua si può fare routing dinamico */}
 
-        <Route path="/allorder" element={<AllOrder />} />
+        <Route path="/:tableNumber/allorder" element={<AllOrder />} />
       </Routes>
     </>
   );

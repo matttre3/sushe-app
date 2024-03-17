@@ -1,15 +1,19 @@
-import React from "react";
+import React, { Fragment, useEffect } from "react";
+import axios from "axios";
 import sushetext from "../assets/sushe-text.png";
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useRedirect } from "../hooks/useRedirect";
 
-const MyOrder = ({ tableNumber, setTableNumber, tablePin, setTablePin }) => {
+const MyOrder = ({ tablePin, setTablePin, userName }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [dishQuantity, setDishQuantity] = useState(1);
   const [dishNumber, setDishNumber] = useState("");
+  const [allOrdersData, setAllOrdersData] = useState([]);
+  const [refresh, setRefresh] = useState(true);
+  const navigate = useNavigate();
 
-  useRedirect("/joincreate", tableNumber == "");
+  const { tableNumber } = useParams();
 
   function openModal() {
     setIsOpen(true);
@@ -45,6 +49,43 @@ const MyOrder = ({ tableNumber, setTableNumber, tablePin, setTablePin }) => {
     setDishQuantity(newQuantity);
   }
 
+  function deleteOrder(orderId) {
+    axios
+      .post("http://localhost:3000/deleteorder", {
+        orderId: orderId,
+      })
+      .then((response) => {
+        console.log(response);
+        if (response) {
+          setRefresh(true);
+        } else {
+          console.log("hai sbagliato qualcosa fratmo");
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+
+  useEffect(() => {
+    function getOrdersData() {
+      if (refresh) {
+        axios
+          .get(
+            `http://localhost:3000/get-orders?tableNumber=${tableNumber}&userName=${userName}`
+          )
+          .then((response) => {
+            setAllOrdersData(response.data);
+            setRefresh(false);
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      }
+    }
+    getOrdersData();
+  }, [refresh]);
+
   return (
     <>
       <div className="flex flex-col items-center bg-sushe-lg fixed top-0 w-full z-50">
@@ -52,7 +93,7 @@ const MyOrder = ({ tableNumber, setTableNumber, tablePin, setTablePin }) => {
           <img className="w-[80px] mt-3 mb-3" src={sushetext} alt="text-logo" />
           <p
             onClick={() => {
-              setTableNumber("");
+              navigate("/joincreate");
             }}
             className="text-sm text-red-900 font-semibold"
           >
@@ -61,46 +102,43 @@ const MyOrder = ({ tableNumber, setTableNumber, tablePin, setTablePin }) => {
         </div>
         <div className="flex justify-center items-center gap-10 mb-3">
           <p className="font-bold text-xl color-sushe-dg">Your Orders</p>
-          <p className="text-xl color-sushe-dg">Table Orders</p>
+          <p
+            onClick={() => {
+              navigate(`/${tableNumber}/allorder`);
+            }}
+            className="text-xl color-sushe-dg"
+          >
+            Table Orders
+          </p>
         </div>
       </div>
       <div className="mt-24">
-        <p>ciao</p>
-        <p>ciao</p>
-        <p>ciao</p>
-        <p>ciao</p>
-        <p>ciao</p>
-        <p>ciao</p>
-        <p>ciao</p>
-        <p>ciao</p>
-        <p>ciao</p>
-        <p>ciao</p>
-        <p>ciao</p>
-        <p>ciao</p>
-        <p>ciao</p>
-        <p>ciao</p>
-        <p>ciao</p>
-        <p>ciao</p>
-        <p>ciao</p>
-        <p>ciao</p>
-        <p>ciao</p>
-        <p>ciao</p>
-        <p>ciao</p>
-        <p>ciao</p>
-        <p>ciao</p>
-        <p>casdasiao</p>
-        <p>ciao</p>
-        <p>ciao</p>
-        <p>ciao</p>
-        <p>ciao</p>
-        <p>ciao</p>
-        <p>ciao</p>
-        <p>ciao</p>
-        <p>ciao</p>
-        <p>ciao</p>
-        <p>ciao</p>
+        {allOrdersData &&
+          allOrdersData.map((data) => {
+            return (
+              <Fragment key={data.id}>
+                <ul>
+                  <li>{data.dish}</li>
+                  <li>{data.id}</li>
+                  <li>{data.quantity}</li>
+                  <li>{data.table_id}</li>
+                  <li>{data.username}</li>
+                </ul>
+                <div className="flex flex-row gap-4 items-center">
+                  <button className="border">Edit</button>
+                  <button
+                    onClick={() => {
+                      deleteOrder(data.id);
+                    }}
+                    className="border"
+                  >
+                    Delete
+                  </button>
+                </div>
+              </Fragment>
+            );
+          })}
       </div>
-
       {isOpen && (
         <div
           onClick={closeModal}

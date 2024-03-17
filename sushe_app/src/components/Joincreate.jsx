@@ -7,16 +7,8 @@ import sushetext from "../assets/sushe-text.png";
 import sushelogo from "../assets/sushe-logo.png";
 import blob from "../assets/blob.svg";
 
-const Joincreate = ({
-  userName,
-  logout,
-  tableNumber,
-  setTableNumber,
-  tablePin,
-  setTablePin,
-}) => {
+const Joincreate = ({ userName, logout, tablePin, setTablePin }) => {
   useRedirect("/", !userName);
-  useRedirect(`/${tableNumber}/myorder`, tableNumber != "");
 
   const navigate = useNavigate();
 
@@ -24,7 +16,7 @@ const Joincreate = ({
     axios
       .get("http://localhost:3000/create-table")
       .then((response) => {
-        setTableNumber(response.data.tableNumber);
+        navigate(`/${response.data.tableNumber}/myorder`);
         setTablePin(response.data.tablePin);
       })
       .catch((error) => {

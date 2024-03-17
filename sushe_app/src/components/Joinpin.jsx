@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import blob from "../assets/blob.svg";
 import axios from "axios";
 
-const JoinPin = ({ tableNumber, setTableNumber }) => {
+const JoinPin = () => {
   const navigate = useNavigate();
 
   function checkLoginTable() {
@@ -16,7 +16,6 @@ const JoinPin = ({ tableNumber, setTableNumber }) => {
       })
       .then((response) => {
         if (response.data.check == true) {
-          setTableNumber(loginTableNumber);
           navigate(`/${loginTableNumber}/myorder`);
         } else {
           console.log("hai sbagliato qualcosa fratmo");
