@@ -24,6 +24,29 @@ app.use(
   })
 );
 
+app.get("/create-table", (req, res) => {
+  let randomNumber = Math.floor(Math.random() * 9000) + 1000;
+  db.query(
+    "INSERT INTO tables (pin) VALUES ($1) RETURNING id",
+    [randomNumber],
+    (err, result) => {
+      if (err) {
+        console.error("errore durante la query");
+      } else {
+        if (result.rowCount === 1) {
+          console.log("tavolo creato con successo");
+          res.json({
+            tableNumber: result.rows[0].id,
+            tablePin: randomNumber,
+          });
+        } else {
+          console.log("errore nella registrazione del tavolo");
+        }
+      }
+    }
+  );
+});
+
 app.use(bodyParser.json({ extended: false }));
 
 app.listen(port, () => {

@@ -1,9 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import sushetext from "../assets/sushe-text.png";
 import sushelogo from "../assets/sushe-logo.png";
 import blob from "../assets/blob.svg";
 
-const Joinpin = () => {
+const JoinPin = () => {
+  function checkLoginTable() {
+    axios.post();
+  }
+
+  const [loginTableNumber, setLoginTableNumber] = us;
+  eState();
+  const [loginTablePin, setLoginTablePin] = useState();
+
   return (
     <>
       <div className="relative flex flex-col items-center overflow-hidden">
@@ -22,13 +30,29 @@ const Joinpin = () => {
         </div>
         <div className="mt-20 flex flex-col justify-center items-center">
           <input
+            onChange={(e) => {
+              setLoginTableNumber(e.target.value);
+            }}
+            className="bg-zinc-200 rounded-xl p-3 w-[250px] mb-5 input"
+            type="number"
+            name="tableNumber"
+            id="tableNumber"
+            placeholder="TABLE NUMBER"
+          />
+          <input
+            onChange={(e) => {
+              setLoginTablePin(e.target.value);
+            }}
             className="bg-zinc-200 rounded-xl p-3 w-[250px] mb-5 input"
             type="number"
             name="pin"
             id="pin"
             placeholder="PIN"
           />
-          <button className="font-bold text-md color-sushe-dg bg-sushe-lg rounded-xl p-2 w-32">
+          <button
+            onClick={checkLoginTable}
+            className="font-bold text-md color-sushe-dg bg-sushe-lg rounded-xl p-2 w-32"
+          >
             Accedi
           </button>
         </div>
@@ -37,4 +61,4 @@ const Joinpin = () => {
   );
 };
 
-export default Joinpin;
+export default JoinPin;

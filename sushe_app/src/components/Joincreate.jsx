@@ -2,12 +2,36 @@ import React from "react";
 import { useEffect } from "react";
 import { useRedirect } from "../hooks/useRedirect";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import sushetext from "../assets/sushe-text.png";
 import sushelogo from "../assets/sushe-logo.png";
 import blob from "../assets/blob.svg";
 
-const Joincreate = ({ userName, logout }) => {
+const Joincreate = ({
+  userName,
+  logout,
+  tableNumber,
+  setTableNumber,
+  tablePin,
+  setTablePin,
+}) => {
   useRedirect("/", !userName);
+  useRedirect(`/${tableNumber}/myorder`, tableNumber != "");
+
+  const navigate = useNavigate();
+
+  function fetchTableCreation() {
+    axios
+      .get("http://localhost:3000/create-table")
+      .then((response) => {
+        setTableNumber(response.data.tableNumber);
+        setTablePin(response.data.tablePin);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+
   return (
     <>
       <div className="relative flex flex-col items-center overflow-hidden">
@@ -25,7 +49,13 @@ const Joincreate = ({ userName, logout }) => {
           />
         </div>
         <div className="mt-20">
-          <button className="font-bold text-l color-sushe-dg bg-sushe-lg rounded-xl p-2 mt-10 w-72">
+          <p className="text-center">
+            Ciao <strong>{userName}</strong>!
+          </p>
+          <button
+            onClick={fetchTableCreation}
+            className="font-bold text-l color-sushe-dg bg-sushe-lg rounded-xl p-2 mt-5 w-72"
+          >
             CREA UN TAVOLO
           </button>
           <div className="flex items-center justify-center flex-row mt-5">
@@ -33,11 +63,16 @@ const Joincreate = ({ userName, logout }) => {
             <p className="color-sushe-dg font-bold">OR</p>
             <div className="border-[1px] ml-2  w-28"></div>
           </div>
-          <button className="font-bold text-l color-sushe-dg bg-sushe-lg rounded-xl p-2 mt-5 w-72">
+          <button
+            onClick={() => {
+              navigate("/JoinPin");
+            }}
+            className="font-bold text-l color-sushe-dg bg-sushe-lg rounded-xl p-2 mt-5 w-72"
+          >
             ENTRA IN UN TAVOLO
           </button>
         </div>
-        <button onClick={logout} className="mt-5">
+        <button onClick={logout} className="mt-5 underline">
           Log Out
         </button>
       </div>

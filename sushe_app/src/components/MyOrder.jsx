@@ -1,11 +1,15 @@
 import React from "react";
 import sushetext from "../assets/sushe-text.png";
 import { useState } from "react";
+import { useParams } from "react-router-dom";
+import { useRedirect } from "../hooks/useRedirect";
 
-const MyOrder = () => {
+const MyOrder = ({ tableNumber, setTableNumber, tablePin, setTablePin }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [dishQuantity, setDishQuantity] = useState(1);
   const [dishNumber, setDishNumber] = useState("");
+
+  useRedirect("/joincreate", tableNumber == "");
 
   function openModal() {
     setIsOpen(true);
@@ -44,7 +48,17 @@ const MyOrder = () => {
   return (
     <>
       <div className="flex flex-col items-center bg-sushe-lg fixed top-0 w-full z-50">
-        <img className="w-[80px] mt-3 mb-3" src={sushetext} alt="text-logo" />
+        <div className="flex flex-row items-center gap-14">
+          <img className="w-[80px] mt-3 mb-3" src={sushetext} alt="text-logo" />
+          <p
+            onClick={() => {
+              setTableNumber("");
+            }}
+            className="text-sm text-red-900 font-semibold"
+          >
+            Quit Table
+          </p>
+        </div>
         <div className="flex justify-center items-center gap-10 mb-3">
           <p className="font-bold text-xl color-sushe-dg">Your Orders</p>
           <p className="text-xl color-sushe-dg">Table Orders</p>
