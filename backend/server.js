@@ -20,7 +20,7 @@ app.use(bodyParser.json({ extended: false }));
 app.use(
   cors({
     origin: "*",
-    methods: ["GET", "POST", "PUT", "DELETE"],
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
@@ -76,7 +76,6 @@ app.post("/checklogintable", (req, res) => {
 app.get("/get-orders", (req, res) => {
   const tableNumber = req.query.tableNumber;
   const userName = req.query.userName;
-  console.log(req.query);
   db.query(
     "SELECT * FROM orders WHERE table_id = $1 AND username = $2",
     [tableNumber, userName],
@@ -84,6 +83,22 @@ app.get("/get-orders", (req, res) => {
       if (err) {
         console.error("errore durante la query");
       } else {
+        res.json(result.rows);
+      }
+    }
+  );
+});
+
+app.get("/get-all-orders", (req, res) => {
+  const tableNumber = req.query.tableNumber;
+  db.query(
+    "SELECT dish, SUM(quantity) AS total_quantity FROM orders WHERE table_id = $1 GROUP BY dish",
+    [tableNumber],
+    (err, result) => {
+      if (err) {
+        console.error("errore durante la query");
+      } else {
+        console.log(result.rows);
         res.json(result.rows);
       }
     }
@@ -100,6 +115,43 @@ app.post("/deleteorder", (req, res) => {
       res.status(200).send();
     }
   });
+});
+
+app.post("/add-dish", (req, res) => {
+  const dishNumber = req.body.dishNumber;
+  const dishQuantity = req.body.dishQuantity;
+  const userName = req.body.userName;
+  const tableNumber = req.body.tableNumber;
+
+  db.query(
+    "INSERT INTO orders (username, table_id, dish, quantity) VALUES ($1, $2, $3, $4)",
+    [userName, tableNumber, dishNumber, dishQuantity],
+    (err, result) => {
+      if (err) {
+        console.error("errore durante la query");
+      } else {
+        res.status(200).send();
+      }
+    }
+  );
+});
+
+app.patch("/edit-order", (req, res) => {
+  const id = req.body.id;
+  const dishNumber = req.body.dishNumber;
+  const dishQuantity = req.body.dishQuantity;
+
+  db.query(
+    "UPDATE orders SET quantity = $1, dish = $2 WHERE id = $3",
+    [dishQuantity, dishNumber, id],
+    (err, result) => {
+      if (err) {
+        console.error("errore durante la query");
+      } else {
+        res.status(200).send();
+      }
+    }
+  );
 });
 
 app.listen(port, () => {

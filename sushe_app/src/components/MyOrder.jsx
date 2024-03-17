@@ -1,52 +1,23 @@
-import React, { Fragment, useEffect } from "react";
+import React, { useEffect } from "react";
 import axios from "axios";
 import sushetext from "../assets/sushe-text.png";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useRedirect } from "../hooks/useRedirect";
+import { OrderRow } from "./OrderRow";
+import AddModal from "./AddModal";
 
-const MyOrder = ({ tablePin, setTablePin, userName }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [dishQuantity, setDishQuantity] = useState(1);
-  const [dishNumber, setDishNumber] = useState("");
+const MyOrder = ({ userName }) => {
   const [allOrdersData, setAllOrdersData] = useState([]);
   const [refresh, setRefresh] = useState(true);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const navigate = useNavigate();
 
   const { tableNumber } = useParams();
 
-  function openModal() {
-    setIsOpen(true);
+  function openAddModal() {
+    setIsAddModalOpen(true);
     document.body.style.overflow = "hidden";
-  }
-
-  function closeModal() {
-    console.log(dishNumber);
-    console.log(dishQuantity); //LI POSSIEDO ENTRAMBI. FUNZIONA
-    setIsOpen(false);
-    //QUA VA LA RICHIESTA POST CHE MANDA NUMERO E QUANTITA
-    setDishQuantity(1);
-    document.body.style.overflow = "scroll";
-  }
-
-  function saveDish(e) {
-    let dish = e.target.value;
-    setDishNumber(dish);
-  }
-
-  function editQuantity(e) {
-    const sign = e.target.innerText;
-    let newQuantity;
-
-    if (sign === "+") {
-      newQuantity = dishQuantity + 1;
-    } else if (dishQuantity > 1) {
-      newQuantity = dishQuantity - 1;
-    } else {
-      newQuantity = 1;
-    }
-
-    setDishQuantity(newQuantity);
   }
 
   function deleteOrder(orderId) {
@@ -114,84 +85,29 @@ const MyOrder = ({ tablePin, setTablePin, userName }) => {
       </div>
       <div className="mt-24">
         {allOrdersData &&
-          allOrdersData.map((data) => {
+          allOrdersData.map((order) => {
             return (
-              <Fragment key={data.id}>
-                <ul>
-                  <li>{data.dish}</li>
-                  <li>{data.id}</li>
-                  <li>{data.quantity}</li>
-                  <li>{data.table_id}</li>
-                  <li>{data.username}</li>
-                </ul>
-                <div className="flex flex-row gap-4 items-center">
-                  <button className="border">Edit</button>
-                  <button
-                    onClick={() => {
-                      deleteOrder(data.id);
-                    }}
-                    className="border"
-                  >
-                    Delete
-                  </button>
-                </div>
-              </Fragment>
+              <OrderRow
+                setRefresh={setRefresh}
+                key={order.id}
+                order={order}
+                deleteOrder={deleteOrder}
+              />
             );
           })}
       </div>
-      {isOpen && (
-        <div
-          onClick={closeModal}
-          className="fixed inset-0 z-1 bg-slate-100 backdrop-blur-sm bg-opacity-50 "
-        >
-          <div className="fixed inset-0 z-50 flex items-center justify-center">
-            <div
-              onClick={(e) => e.stopPropagation()}
-              className="bg-sushe-lg p-8 rounded-lg shadow-lg flex flex-col items-center justify-center w-full ml-4 mr-4"
-            >
-              <p className="color-sushe-dg font-semibold text-xl mb-4">
-                DISH NUMBER
-              </p>
-              <input
-                onChange={saveDish}
-                className="bg-zinc-200 m-1 rounded-xl  p-3 w-24 mb-5 input"
-                type="number"
-                name="dish"
-                id="dish"
-                placeholder=""
-              />
-              <p className="color-sushe-dg font-semibold text-m mb-3">
-                Quantity
-              </p>
-              <div className="flex items-center justify-center mb-3">
-                <button
-                  onClick={editQuantity}
-                  className="font-bold text-2xl color-sushe-dg bg-sushe-mg rounded-md w-7 h-7"
-                >
-                  -
-                </button>
-                <p className="font-bold text-3xl color-sushe-dg ml-4 mr-4">
-                  {dishQuantity}
-                </p>
-                <button
-                  onClick={editQuantity}
-                  className="font-bold text-2xl color-sushe-dg bg-sushe-mg rounded-md w-7 h-7"
-                >
-                  +
-                </button>
-              </div>
-              <button
-                onClick={closeModal}
-                className="font-bold text-l color-sushe-dg bg-sushe-mg rounded-md w-16 p-1"
-              >
-                ADD
-              </button>
-            </div>
-          </div>
-        </div>
+
+      {isAddModalOpen && (
+        <AddModal
+          closeModal={() => setIsAddModalOpen(false)}
+          setRefresh={setRefresh}
+          userName={userName}
+          tableNumber={tableNumber}
+        />
       )}
+
       <button
-        onClick={openModal}
+        onClick={openAddModal}
         className=" z-49 fixed font-bold text-md color-sushe-dg bg-sushe-lg rounded-2xl p-2 bottom-4 right-4"
       >
         {" "}
