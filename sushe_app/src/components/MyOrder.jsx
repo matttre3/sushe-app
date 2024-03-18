@@ -7,14 +7,13 @@ import { useRedirect } from "../hooks/useRedirect";
 import { OrderRow } from "./OrderRow";
 import AddModal from "./AddModal";
 import quitbutton from "../assets/quittable.svg";
+import { useQuery } from "../hooks/useQuery";
 
 const MyOrder = ({ userName }) => {
   const [allOrdersData, setAllOrdersData] = useState([]);
-  const [refresh, setRefresh] = useState(true);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const navigate = useNavigate();
-  const pin = localStorage.getItem("tablePin");
-
+  const { pin } = useQuery();
   const { tableNumber } = useParams();
 
   function openAddModal() {
@@ -22,15 +21,29 @@ const MyOrder = ({ userName }) => {
     document.body.style.overflow = "hidden";
   }
 
+  useEffect(() => {
+    axios
+      .get(
+        `http://localhost:3000/validate-table?tableNumber=${tableNumber}&pin=${pin}`
+      )
+      .then((response) => {
+        if (response.data.validate == false) {
+          navigate("/joinpin");
+        }
+      }).catch;
+  }, []);
+
   function deleteOrder(orderId) {
     axios
       .post("http://localhost:3000/deleteorder", {
         orderId: orderId,
+        pin: pin,
+        tableNumber: tableNumber,
       })
       .then((response) => {
         console.log(response);
         if (response) {
-          setRefresh(true);
+          getOrdersData();
         } else {
           console.log("hai sbagliato qualcosa fratmo");
         }
@@ -40,24 +53,26 @@ const MyOrder = ({ userName }) => {
       });
   }
 
+  function getOrdersData() {
+    axios
+      .get(
+        `http://localhost:3000/get-orders?tableNumber=${tableNumber}&userName=${userName}`
+      )
+      .then((response) => {
+        setAllOrdersData(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+
   useEffect(() => {
-    function getOrdersData() {
-      if (refresh) {
-        axios
-          .get(
-            `http://localhost:3000/get-orders?tableNumber=${tableNumber}&userName=${userName}`
-          )
-          .then((response) => {
-            setAllOrdersData(response.data);
-            setRefresh(false);
-          })
-          .catch((error) => {
-            console.error(error);
-          });
-      }
-    }
+    const intervalId = setInterval(getOrdersData, 5000);
     getOrdersData();
-  }, [refresh]);
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, []);
 
   return (
     <>
@@ -85,7 +100,7 @@ const MyOrder = ({ userName }) => {
           <p className="font-bold text-xl color-sushe-dg">Your Orders</p>
           <p
             onClick={() => {
-              navigate(`/${tableNumber}/allorder`);
+              navigate(`/${tableNumber}/allorder?pin=${pin}`);
             }}
             className="text-xl color-sushe-dg"
           >
@@ -98,7 +113,7 @@ const MyOrder = ({ userName }) => {
           allOrdersData.map((order) => {
             return (
               <OrderRow
-                setRefresh={setRefresh}
+                refreshOrders={getOrdersData}
                 key={order.id}
                 order={order}
                 deleteOrder={deleteOrder}
@@ -110,7 +125,7 @@ const MyOrder = ({ userName }) => {
       {isAddModalOpen && (
         <AddModal
           closeModal={() => setIsAddModalOpen(false)}
-          setRefresh={setRefresh}
+          refreshOrders={getOrdersData}
           userName={userName}
           tableNumber={tableNumber}
         />

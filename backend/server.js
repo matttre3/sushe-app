@@ -17,6 +17,7 @@ const port = 3000;
 db.connect();
 
 app.use(bodyParser.json({ extended: false }));
+
 app.use(
   cors({
     origin: "*",
@@ -92,7 +93,7 @@ app.get("/get-orders", (req, res) => {
 app.get("/get-all-orders", (req, res) => {
   const tableNumber = req.query.tableNumber;
   db.query(
-    "SELECT dish, SUM(quantity) AS total_quantity FROM orders WHERE table_id = $1 GROUP BY dish",
+    "SELECT id,dish, SUM(quantity) AS total_quantity FROM orders WHERE table_id = $1 GROUP BY dish,id",
     [tableNumber],
     (err, result) => {
       if (err) {
@@ -108,7 +109,7 @@ app.get("/get-all-orders", (req, res) => {
 app.get("/get-order-details", (req, res) => {
   const tableNumber = req.query.tableNumber;
   db.query(
-    `SELECT dish,username,SUM(quantity) AS total_quantity FROM orders WHERE table_id = ${tableNumber} GROUP BY dish, username`,
+    `SELECT id,dish,username,SUM(quantity) AS total_quantity FROM orders WHERE table_id = ${tableNumber} GROUP BY dish, username, id`,
     (err, result) => {
       if (err) {
         console.error("errore durante la query");
@@ -120,16 +121,60 @@ app.get("/get-order-details", (req, res) => {
   );
 });
 
+app.get("/validate-table", (req, res) => {
+  const tableNumber = req.query.tableNumber;
+  const pin = req.query.pin;
+  db.query(
+    "SELECT * FROM tables WHERE id = $1",
+    [tableNumber],
+    (err, result) => {
+      if (err) {
+        console.error("errore durante la query");
+      } else {
+        if (result.rows.length > 0) {
+          const table = result.rows[0];
+          if (pin == table.pin) {
+            res.json({ validate: true });
+            console.log("e giusto fra");
+          } else {
+            res.json({ validate: false });
+          }
+        }
+      }
+    }
+  );
+});
+
 app.post("/deleteorder", (req, res) => {
   const orderId = req.body.orderId;
+  const tableNumber = req.body.tableNumber;
+  const pin = req.body.pin;
 
-  db.query("DELETE FROM orders WHERE id = $1", [orderId], (err, result) => {
-    if (err) {
-      console.error("errore durante la query");
-    } else {
-      res.status(200).send();
+  db.query(
+    "SELECT * FROM tables WHERE id = $1 AND pin = $2 ",
+    [tableNumber, pin],
+    (err, result) => {
+      if (err) {
+        console.error("errore durante la query");
+      } else {
+        if (result.rows.length > 0) {
+          db.query(
+            "DELETE FROM orders WHERE id = $1",
+            [orderId],
+            (err, result) => {
+              if (err) {
+                console.error("errore durante la query");
+              } else {
+                res.status(200).send();
+              }
+            }
+          );
+        } else {
+          res.status(401).send();
+        }
+      }
     }
-  });
+  );
 });
 
 app.post("/add-dish", (req, res) => {
@@ -137,15 +182,30 @@ app.post("/add-dish", (req, res) => {
   const dishQuantity = req.body.dishQuantity;
   const userName = req.body.userName;
   const tableNumber = req.body.tableNumber;
+  const pin = req.body.pin;
 
   db.query(
-    "INSERT INTO orders (username, table_id, dish, quantity) VALUES ($1, $2, $3, $4)",
-    [userName, tableNumber, dishNumber, dishQuantity],
+    "SELECT * FROM tables WHERE id = $1 AND pin = $2 ",
+    [tableNumber, pin],
     (err, result) => {
       if (err) {
         console.error("errore durante la query");
       } else {
-        res.status(200).send();
+        if (result.rows.length > 0) {
+          db.query(
+            "INSERT INTO orders (username, table_id, dish, quantity) VALUES ($1, $2, $3, $4)",
+            [userName, tableNumber, dishNumber, dishQuantity],
+            (err, result) => {
+              if (err) {
+                console.error("errore durante la query");
+              } else {
+                res.status(200).send();
+              }
+            }
+          );
+        } else {
+          res.status(401).send();
+        }
       }
     }
   );

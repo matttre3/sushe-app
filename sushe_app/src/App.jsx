@@ -11,8 +11,6 @@ import "./App.css";
 
 function App() {
   const [userName, setUserName] = useLocalStorage("userName", "");
-  const [tablePin, setTablePin] = useLocalStorage("tablePin", "");
-
   return (
     <>
       <Routes>
@@ -28,29 +26,15 @@ function App() {
         <Route
           path="/joincreate"
           element={
-            <Joincreate
-              userName={userName}
-              logout={() => setUserName("")}
-              tablePin={tablePin}
-              setTablePin={setTablePin}
-            />
+            <Joincreate userName={userName} logout={() => setUserName("")} />
           }
         />
 
-        <Route
-          path="/joinpin"
-          element={<JoinPin setTablePin={setTablePin} />}
-        />
+        <Route path="/joinpin" element={<JoinPin />} />
 
         <Route
           path={`/:tableNumber/myorder`}
-          element={
-            <MyOrder
-              userName={userName}
-              tablePin={tablePin}
-              setTablePin={setTablePin}
-            />
-          }
+          element={<MyOrder userName={userName} />}
         />
         {/* ^^^^^^^  /:id/myorder qua si può fare routing dinamico */}
 

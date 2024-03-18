@@ -4,7 +4,7 @@ import EditModal from "./EditModal";
 import editbutton from "../assets/edit.svg";
 import deletebutton from "../assets/delete.svg";
 
-export const OrderRow = ({ order, deleteOrder, setRefresh }) => {
+export const OrderRow = ({ order, deleteOrder, refreshOrders }) => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   return (
@@ -13,7 +13,7 @@ export const OrderRow = ({ order, deleteOrder, setRefresh }) => {
         <EditModal
           closeModal={() => setIsEditModalOpen(false)}
           order={order}
-          setRefresh={setRefresh}
+          refreshOrders={refreshOrders}
         />
       )}
 
@@ -22,7 +22,7 @@ export const OrderRow = ({ order, deleteOrder, setRefresh }) => {
           <li className="font-semibold text-xl rounded-xl bg-slate-200 p-2 bottom-4 right-4 h-10 min-w-10 w-auto text-center">
             {order.dish}
           </li>
-          <li className="font-semibold text-xl rounded-xl bg-slate-200 p-2 bottom-4 right-4 h-10 min-w-10 w-auto text-center">
+          <li className="font-semibold text-xl rounded-xl bg-sushe-lg p-2 bottom-4 right-4 h-10 min-w-10 w-auto text-center">
             {order.quantity}
           </li>
         </ul>

@@ -12,32 +12,49 @@ import refreshbutton from "../assets/refresh.svg";
 import editbutton from "../assets/edit.svg";
 import quitbutton from "../assets/quittable.svg";
 import AllOrderRow from "./AllOrderRow";
+import { useQuery } from "../hooks/useQuery";
 
 const AllOrder = () => {
   const navigate = useNavigate();
   const { tableNumber } = useParams();
-  const [refresh, setRefresh] = useState(true);
   const [allOrdersData, setAllOrdersData] = useState([]);
-  const pin = localStorage.getItem("tablePin");
+  const { pin } = useQuery();
 
   useEffect(() => {
-    function getOrdersData() {
-      if (refresh) {
-        axios
-          .get(
-            `http://localhost:3000/get-all-orders?tableNumber=${tableNumber}`
-          )
-          .then((response) => {
-            setAllOrdersData(response.data);
-            setRefresh(false);
-          })
-          .catch((error) => {
-            console.error(error);
-          });
-      }
-    }
+    axios
+      .get(
+        `http://localhost:3000/validate-table?tableNumber=${tableNumber}&pin=${pin}`
+      )
+      .then((response) => {
+        if (response.data.validate == false) {
+          navigate("/joinpin");
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }, []);
+
+  function getOrdersData() {
+    console.log("mi stai chiamando");
+
+    axios
+      .get(`http://localhost:3000/get-all-orders?tableNumber=${tableNumber}`)
+      .then((response) => {
+        setAllOrdersData(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+
+  useEffect(() => {
+    const intervalId = setInterval(getOrdersData, 5000);
     getOrdersData();
-  }, [refresh]);
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, []);
 
   return (
     <>
@@ -65,7 +82,7 @@ const AllOrder = () => {
           <p
             className="text-xl color-sushe-dg"
             onClick={() => {
-              navigate(`/${tableNumber}/myorder`);
+              navigate(`/${tableNumber}/myorder?pin=${pin}`);
             }}
           >
             Your Orders
@@ -77,7 +94,7 @@ const AllOrder = () => {
         {allOrdersData &&
           allOrdersData.map((data, index) => {
             return (
-              <Fragment key={index}>
+              <Fragment key={data.id}>
                 <AllOrderRow data={data} chevronbutton={chevronbutton} />
               </Fragment>
             );

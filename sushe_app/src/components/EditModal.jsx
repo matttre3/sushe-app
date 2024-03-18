@@ -2,7 +2,7 @@ import React from "react";
 import { useState } from "react";
 import axios from "axios";
 
-const EditModal = ({ closeModal, order, setRefresh }) => {
+const EditModal = ({ closeModal, order, refreshOrders }) => {
   const [dishQuantity, setDishQuantity] = useState(order.quantity);
   const [dishNumber, setDishNumber] = useState(order.dish);
   console.log(order);
@@ -21,7 +21,7 @@ const EditModal = ({ closeModal, order, setRefresh }) => {
       })
       .then((response) => {
         console.log(response);
-        setRefresh(true);
+        refreshOrders();
         closeModal();
       })
       .catch((err) => {

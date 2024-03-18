@@ -53,7 +53,10 @@ const AllOrderRow = ({ data, chevronbutton }) => {
             .filter((dish) => dish.dish === data.dish)
             .map((dish, index) => {
               return (
-                <div className="flex flex-row justify-between pl-3 p-1">
+                <div
+                  key={dish.id}
+                  className="flex flex-row justify-between pl-3 p-1"
+                >
                   <ul className="flex flex-row gap-3">
                     <li className="font-semibold text-xl rounded-xl bg-sushe-lg p-2 bottom-4 right-4 h-10 min-w-10 w-auto text-center">
                       {dish.total_quantity}

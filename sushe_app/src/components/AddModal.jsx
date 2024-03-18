@@ -1,10 +1,13 @@
 import React from "react";
 import { useState } from "react";
 import axios from "axios";
+import { useQuery } from "../hooks/useQuery";
 
-const AddModal = ({ closeModal, setRefresh, userName, tableNumber }) => {
+const AddModal = ({ closeModal, userName, tableNumber, refreshOrders }) => {
   const [dishQuantity, setDishQuantity] = useState(0);
   const [dishNumber, setDishNumber] = useState("");
+  const { pin } = useQuery();
+
   function saveDish(e) {
     let dish = e.target.value;
     setDishNumber(dish);
@@ -20,10 +23,11 @@ const AddModal = ({ closeModal, setRefresh, userName, tableNumber }) => {
         dishQuantity: dishQuantity,
         userName: userName,
         tableNumber: tableNumber,
+        pin: pin,
       })
       .then((response) => {
         console.log(response);
-        setRefresh(true);
+        refreshOrders();
         closeModal();
       })
       .catch((err) => {

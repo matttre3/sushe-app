@@ -6,7 +6,7 @@ import blob from "../assets/blob.svg";
 import chevronleft from "../assets/chevron-left.svg";
 import axios from "axios";
 
-const JoinPin = ({ setTablePin }) => {
+const JoinPin = ({}) => {
   const navigate = useNavigate();
 
   function checkLoginTable() {
@@ -17,8 +17,7 @@ const JoinPin = ({ setTablePin }) => {
       })
       .then((response) => {
         if (response.data.check == true) {
-          setTablePin(loginTablePin);
-          navigate(`/${loginTableNumber}/myorder`);
+          navigate(`/${loginTableNumber}/myorder?pin=${loginTablePin}`);
         } else {
           console.log("hai sbagliato qualcosa fratmo");
         }
