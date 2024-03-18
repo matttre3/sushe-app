@@ -6,12 +6,14 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useRedirect } from "../hooks/useRedirect";
 import { OrderRow } from "./OrderRow";
 import AddModal from "./AddModal";
+import quitbutton from "../assets/quittable.svg";
 
 const MyOrder = ({ userName }) => {
   const [allOrdersData, setAllOrdersData] = useState([]);
   const [refresh, setRefresh] = useState(true);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const navigate = useNavigate();
+  const pin = localStorage.getItem("tablePin");
 
   const { tableNumber } = useParams();
 
@@ -60,16 +62,24 @@ const MyOrder = ({ userName }) => {
   return (
     <>
       <div className="flex flex-col items-center bg-sushe-lg fixed top-0 w-full z-50">
-        <div className="flex flex-row items-center gap-14">
-          <img className="w-[80px] mt-3 mb-3" src={sushetext} alt="text-logo" />
-          <p
+        <div className="flex flex-row items-center p-3 justify-center w-full pl-11 pr-11">
+          <div className="flex gap-4">
+            <div className="color-sushe-dg items-center flex flex-col">
+              <span>Table</span> <strong>{tableNumber}</strong>
+            </div>
+            <div className="color-sushe-dg items-center flex flex-col">
+              <span>PIN</span>
+              <strong>{pin}</strong>
+            </div>
+          </div>
+          <div
             onClick={() => {
               navigate("/joincreate");
             }}
-            className="text-sm text-red-900 font-semibold"
+            className="text-sm text-red-900 font-semibold text-center absolute right-[10%]"
           >
-            Quit Table
-          </p>
+            <img src={quitbutton} alt="" />
+          </div>
         </div>
         <div className="flex justify-center items-center gap-10 mb-3">
           <p className="font-bold text-xl color-sushe-dg">Your Orders</p>
@@ -83,7 +93,7 @@ const MyOrder = ({ userName }) => {
           </p>
         </div>
       </div>
-      <div className="mt-24">
+      <div className="mt-28">
         {allOrdersData &&
           allOrdersData.map((order) => {
             return (
@@ -108,7 +118,7 @@ const MyOrder = ({ userName }) => {
 
       <button
         onClick={openAddModal}
-        className=" z-49 fixed font-bold text-md color-sushe-dg bg-sushe-lg rounded-2xl p-2 bottom-4 right-4"
+        className="z-49 fixed font-bold text-md color-sushe-dg bg-sushe-lg rounded-2xl p-2 bottom-4 right-4"
       >
         {" "}
         + New Dish

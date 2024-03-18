@@ -105,6 +105,21 @@ app.get("/get-all-orders", (req, res) => {
   );
 });
 
+app.get("/get-order-details", (req, res) => {
+  const tableNumber = req.query.tableNumber;
+  db.query(
+    `SELECT dish,username,SUM(quantity) AS total_quantity FROM orders WHERE table_id = ${tableNumber} GROUP BY dish, username`,
+    (err, result) => {
+      if (err) {
+        console.error("errore durante la query");
+      } else {
+        console.log(result.rows);
+        res.json(result.rows);
+      }
+    }
+  );
+});
+
 app.post("/deleteorder", (req, res) => {
   const orderId = req.body.orderId;
 
