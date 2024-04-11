@@ -18,7 +18,7 @@ Sushe facilitates the ordering process at Japanese sushi restaurants by allowing
 
 <h2> Technologies Used </h2> 
 
-- Frontend: Sushe is built using React, leveraging features such as `useState`, `useEffect`, custom hooks, `Axios`, `React Router`, and navigation.
+- Frontend: Sushe is built using React, leveraging features such as `useState`, `useEffect`, custom hooks, `Axios`, `React Router`, and navigation. the styling is also done with Tailwind CSS Framework
 
 - Backend: The backend is implemented in Node.js with Express and the Body Parser middleware.
 
