@@ -2,7 +2,7 @@
 
 ![github-sushe](https://github.com/matttre3/sushe-app/assets/140153086/619d286f-c7d2-434a-a236-5c30760576a4)
 
-Welcome to Sushe! Sushe is a web app designed to simplify the ordering process at Japanese sushi restaurants. In Italy, dishes on the menu are often associated with numbers, and customers must write down their orders on a piece of paper and hand them to the waiter. This can become complex and time-consuming, especially when there are many people at the table. Sushe comes into play by offering a simple and efficient way to manage orders directly from customers' devices.
+Welcome to Sushe! Sushe is a CRUD web application designed to simplify the ordering process at Japanese sushi restaurants. In Italy, dishes on the menu are often associated with numbers, and customers must write down their orders on a piece of paper and hand them to the waiter. This can become complex and time-consuming, especially when there are many people at the table. Sushe comes into play by offering a simple and efficient way to manage orders directly from customers' devices.
 
 https://github.com/matttre3/sushe-app/assets/140153086/6bcf1dd1-ab40-4078-8e6a-8f41b58a8ee5
 
